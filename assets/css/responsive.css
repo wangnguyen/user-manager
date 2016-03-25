@@ -1,0 +1,39 @@
+@media (max-width: 768px) {
+    .table-row span{
+        font-size: 12px;
+    }
+    .table-row .btn.btn-info span{
+        font-size: 10px;
+        line-height: 0;
+    }
+    .table-row div:last-child{
+        padding: 0;
+    }
+}
+@media (max-width: 375px) {
+    h1{
+        font-size: 25px;
+        margin: 0;
+    }
+    h3{font-size: 15px;}
+    .table-header{
+        font-size:10px;
+        padding: 5px 0;
+    }
+    .table-row span{
+        font-size: 10px;
+    }
+    .footer p{font-size: 10px}
+    input.search-input{
+        width: 100px;
+        font-size: 10px;
+    }
+    .table-row > div span{
+        line-height: 20px;
+    }
+    .btn-add{
+        padding: 2px 6px;
+        font-size: 11px;
+        margin-right: 2px;
+    }
+}

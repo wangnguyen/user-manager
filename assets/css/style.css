@@ -1,0 +1,104 @@
+h3{
+    margin: 0;
+    display: inline-block;
+    font-size: 20px;
+}
+span.error{
+    color: red;
+    display: block;
+    text-align: center;
+}
+span.success{
+    color: green;
+    display: block;
+    text-align: center;
+}
+form input[type=radio]{
+    margin: 0 5px 0 20px;
+}
+.modal-header{
+    background: #FFC627;
+}
+.box-header{
+    background: #FFC627;
+    padding: 10px;}
+.right-box{float: right;
+    display: inline-block}
+.btn-add{
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 0;
+    margin-right: 5px;
+    font-size: 12px;
+    padding: 4px 8px;
+    color: #FFF;
+}
+input.search-input{
+    background: none;
+    border: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #999999;
+    padding: 3px 7px;
+}
+.table-header{
+    padding: 10px 0;
+    font-weight: bold;
+    border-bottom: 1px solid #cccccc;
+    margin:0;
+}
+.table-row{
+    padding: 5px 0;
+    border-bottom: 1px solid #cccccc;
+    margin: 0;
+}
+.table-row:hover{
+    background: #f4f4f4;
+}
+.table-row > div span{
+    line-height: 28px;
+}
+.table-row div:nth-child(2) span{
+    width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.table-row div:nth-child(4){
+    text-align: center;
+}
+.table-row div:nth-child(3){
+    font-size: 15px;
+}
+.table-row.selected .user-chart.active{
+    color: #FFC627;
+}
+.table-row.selected{
+    background: #ededed;
+}
+.table-row .btn{
+    width: 100%;
+    text-align: center;
+    padding: 4px 0;
+    font-size: 12px
+}
+.page-nav{
+    text-align: center;
+}
+.page-nav li.current a{
+    background: #ededed;
+}
+#chart-skills .noti{
+    margin-top: 20px;
+    font-size: 15px;
+    text-align: center;
+}
+.footer{
+    font-size: 13px;
+    text-align: right;
+}
+.footer a{
+    color: #FFC627;
+}
+#chart-skills-responsive{
+    width: 80%;
+}
+video{width: 100%; height: auto}

@@ -1,10 +1,199 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dashboardApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Demo User Management</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Posiba - Dashboard</title>
+
+    <!-- CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-    <h1>Hello world !</h1>
+
+<body ng-controller="userCtrl">
+    <!-- Begin page content -->
+    <div class="container content-wrap">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+        </div>
+        <div class="main-content row">
+            <!-- Left Content -->
+            <div class="col-sm-8 left-content">
+                <!-- Header Box -->
+                <div class="box-header">
+                    <h3>Data User</h3>
+                    <div class="right-box">
+                        <button ng-click="doAddUser()" type="button" class="btn-add" id="btn-add" data-toggle="tooltip" data-placement="top" title="Add user">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <input type="text" ng-model="search" placeholder="Search user" class="search-input">
+                    </div>
+                </div>
+                <!-- Table Data -->
+                <div class="table-data">
+                    <div class="table-header row">
+                        <div class="col-sm-3 col-xs-4"><span>Name</span></div>
+                        <div class="col-sm-3 col-xs-3"><span>Email</span></div>
+                        <div class="col-sm-2 col-xs-3"><span>Skills</span></div>
+                        <div class="col-sm-2 col-xs-2"><span>Gender</span></div>
+                    </div>
+                    <div class="table-row row" ng-repeat="user in users | filter:search | limitTo:quantity:begin" ng-click="viewinfo(user)" ng-class="(user == userSelected) ? 'selected' : ''">
+                        <div class="col-sm-3 col-xs-4"><span class="user-name" ng-bind="user.name"></span></div>
+                        <div class="col-sm-3 col-xs-3"><span class="user-email" ng-bind="user.email"></span></div>
+                        <div class="col-sm-2 col-xs-3">
+                            <span class="user-chart active"><i class="fa fa-pie-chart"></i></span>&nbsp;
+                            <span class="user-chart"><i class="fa fa-bar-chart"></i></span>
+                        </div>
+                        <div class="col-sm-1 col-xs-2">
+                            <span class="user-gender"><i ng-class="{male:'fa-male', female:'fa-female'}[user.gender]" class="fa"></i></span>
+                        </div>
+                        <div class="col-sm-2 hidden-xs">
+                            <button ng-click="doEditUser(user)" type="button" class="btn btn-info">
+                                <i class="fa fa-pencil-square-o"></i> <span class="hidden-xs">Edit</span>
+                            </button>
+                        </div>
+                        <div class="col-sm-1 hidden-xs">
+                            <button ng-click="doDeleteUser(user.email); $event.stopPropagation();" type="button" class="btn btn-danger">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paging -->
+                <nav ng-if="page > 1" class="page-nav">
+                    <ul class="pagination">
+                        <li ng-if="currentPage != 1" ng-click="prevPage()">
+                            <a href="javascript:void(0)"><span aria-hidden="true">&laquo;</span></a>
+                        </li>
+                        <li ng-class="currentPage == n ? 'current' : ''" ng-click="changePage(n)" ng-repeat="n in pageRange"><a href="javascript:void(0)" ng-bind="n"></a></li>
+                        <li ng-if="currentPage != page" ng-click="nextPage()">
+                            <a href="javascript:void(0)"><span aria-hidden="true">&raquo;</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Right Content -->
+            <div class="col-sm-4 right-content hidden-xs">
+                <!-- Header Box -->
+                <div class="box-header">
+                    <h3>Chart Skills</h3>
+                </div>
+                <div id="chart-skills"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Demo user management | developed by <a href="mailto:quang0828@gmail.com">Quang Nguyen</a></p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form ng-submit="addUser()">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add new user profile</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="error" ng-bind="add.addUserMess"></span>
+                        <span class="success" ng-bind="add.addUserSuccess"></span>
+                        <div class="form-group">
+                            <label for="user-name" class="control-label">Name:</label>
+                            <input required type="text" class="form-control" id="user-name" ng-model="add.userName">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email" class="control-label">Email:</label>
+                            <input required type="email" class="form-control" id="user-email" ng-model="add.userEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email" class="control-label">Gender:</label>
+                            <label><input type="radio" ng-model="add.userGender" value="male">Male</label>
+                            <label><input type="radio" ng-model="add.userGender" value="female">Female</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-skills" class="control-label">SKills:</label>
+                            <label class="comment">(skills separated by commas ',')</label>
+                            <textarea required type="text" class="form-control" id="user-skills" ng-model="add.userSkills"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Save">
+                        <input type="reset" class="btn btn-default" value="Reset">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form ng-submit="editUser()">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">User Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="error" ng-bind="edit.editUserMess"></span>
+                        <span class="success" ng-bind="edit.editUserSuccess"></span>
+                        <div class="form-group">
+                            <label for="edit-user-name" class="control-label">Name:</label>
+                            <input required type="text" class="form-control" id="edit-user-name" ng-model="edit.userName">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-user-email" class="control-label">Email:</label>
+                            <input disabled required type="email" class="form-control" id="edit-user-email" ng-model="edit.userEmail">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Gender:</label>
+                            <label><input type="radio" ng-model="edit.userGender" value="male" ng-checked="true">Male</label>
+                            <label><input type="radio" ng-model="edit.userGender" value="female">Female</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-user-skills" class="control-label">SKills:</label>
+                            <label class="comment">(skills separated by commas ',')</label>
+                            <textarea required type="text" class="form-control" id="edit-user-skills" ng-model="edit.userSkills"></textarea>
+                        </div>
+                        <div id="chart-skills-responsive"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Update">
+                        <a href="javascript:void(0)" class="btn btn-danger" ng-click="doDeleteUser(edit.userEmail)" >Delete User</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/highcharts/lib/highcharts.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/userSv.js"></script>
+    <script src="app/userCtrl.js"></script>
 </body>
 </html>

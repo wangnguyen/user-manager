@@ -1,0 +1,12 @@
+{
+  "name": "Posiba Testing",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "3.3.4",
+    "angular": "^1.5.1",
+    "highcharts": "highcharts.com#^4.2.3",
+    "font-awesome": "fontawesome#^4.5.0",
+    "lodash": "^4.6.1"
+  },
+  "devDependencies": {}
+}
