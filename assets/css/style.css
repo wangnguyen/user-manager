@@ -17,10 +17,10 @@ form input[type=radio]{
     margin: 0 5px 0 20px;
 }
 .modal-header{
-    background: #FFC627;
+    background: #b2daff;
 }
 .box-header{
-    background: #FFC627;
+    background: #b2daff;
     padding: 10px;}
 .right-box{float: right;
     display: inline-block}
@@ -69,7 +69,7 @@ input.search-input{
     font-size: 15px;
 }
 .table-row.selected .user-chart.active{
-    color: #FFC627;
+    color: #b2daff;
 }
 .table-row.selected{
     background: #ededed;
@@ -96,9 +96,8 @@ input.search-input{
     text-align: right;
 }
 .footer a{
-    color: #FFC627;
+    color: #b2daff;
 }
 #chart-skills-responsive{
     width: 80%;
 }
-video{width: 100%; height: auto}
